@@ -14,7 +14,7 @@ export class CreateUserUseCase implements ICreateUserUseCase {
 
   async execute(command: CreateUserCommand) {
     const user = User.new(
-      command.email, 
+      command.email,
       await this.hash.execute(command.password, command.salt),
       command.username,
     );

@@ -17,7 +17,7 @@ export class CreateUserController {
   ) {}
 
   @Post()
-  async execute(@Body() request: Readonly<CreateUserRequest>) {
+  async execute(@Body() request: CreateUserRequest) {
     const command = new CreateUserCommand(
       request.email,
       request.password,
