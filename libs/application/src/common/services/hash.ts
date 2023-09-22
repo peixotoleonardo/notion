@@ -1,5 +1,6 @@
 export const IHash = Symbol();
 
 export interface IHash {
-  execute(plaintext: string, salt: number): Promise<string>;
+  hash(plaintext: string, salt: number): Promise<string>;
+  compare(plaintext: string, hash: string): Promise<boolean>;
 }

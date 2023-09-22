@@ -7,6 +7,10 @@ export class Email {
 
   constructor(private readonly _value: string) {}
 
+  static with(value: string) {
+    return new this(value);
+  }
+
   isValid() {
     return typeof this._value === 'string' && isEmail(this._value);
   }

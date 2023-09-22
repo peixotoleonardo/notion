@@ -5,7 +5,11 @@ import { IHash } from '@app/application/common/services/hash';
 
 @Injectable()
 export class HashService implements IHash {
-  execute(plaintext: string, salt: number): Promise<string> {
+  compare(plaintext: string, hash: string): Promise<boolean> {
+    return bcrypt.compare(plaintext, hash);
+  }
+
+  hash(plaintext: string, salt: number): Promise<string> {
     return bcrypt.hash(plaintext, salt);
   }
 }

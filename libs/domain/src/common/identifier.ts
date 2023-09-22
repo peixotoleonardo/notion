@@ -10,4 +10,8 @@ export class Identifier {
   static unique() {
     return new this(randomUUID());
   }
+
+  static with(id: string) {
+    return new this(id);
+  }
 }

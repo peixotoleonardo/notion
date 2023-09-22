@@ -13,6 +13,11 @@ import { userConfigFactory } from '@notion/user/config';
 import { UserEntity } from '@notion/user/data/user.entity';
 import { UserRepository } from '@notion/user/data/user.repository';
 import { CreateUserController } from '@notion/user/api/controllers/create-user.controller';
+import { SignInController } from '@notion/user/api/controllers/sign-in.controller';
+import { ISignInUseCase } from '@app/application/user/commands/sign-in/sign-in.use-case.interface';
+import { SignInUseCase } from '@app/application/user/commands/sign-in/sign-in.use-case';
+import { IUserReadOnlyRepository } from '@app/application/user/repositories/user-read-only.repository.interface';
+import { IJwt } from '@app/application/common/services/jwt';
 
 @Module({
   imports: [
@@ -20,9 +25,14 @@ import { CreateUserController } from '@notion/user/api/controllers/create-user.c
     TypeOrmModule.forFeature([UserEntity]),
   ],
   providers: [
+    UserRepository,
     {
       provide: IUserWriteOnlyRepository,
-      useClass: UserRepository,
+      useExisting: UserRepository,
+    },
+    {
+      provide: IUserReadOnlyRepository,
+      useExisting: UserRepository,
     },
     {
       provide: ICreateUserUseCase,
@@ -30,7 +40,16 @@ import { CreateUserController } from '@notion/user/api/controllers/create-user.c
       useFactory: (hash: IHash, repository: IUserWriteOnlyRepository) =>
         new CreateUserUseCase(hash, repository),
     },
+    {
+      provide: ISignInUseCase,
+      inject: [IHash, IUserReadOnlyRepository, IJwt],
+      useFactory: (
+        hash: IHash,
+        repository: IUserReadOnlyRepository,
+        jwt: IJwt,
+      ) => new SignInUseCase(jwt, hash, repository),
+    },
   ],
-  controllers: [CreateUserController],
+  controllers: [CreateUserController, SignInController],
 })
 export class UserModule {}

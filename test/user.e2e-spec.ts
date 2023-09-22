@@ -8,7 +8,7 @@ describe('UserController (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
-    app = await makeApp()
+    app = await makeApp();
 
     await app.init();
   });
@@ -50,7 +50,9 @@ describe('UserController (e2e)', () => {
       expect(response.status).toBe(HttpStatus.BAD_REQUEST);
       expect(response.body.error).toBe('Bad Request');
       expect(response.body.statusCode).toBe(HttpStatus.BAD_REQUEST);
-      expect((response.body.message as Array<string>).sort()).toStrictEqual(data.message.sort())
+      expect((response.body.message as Array<string>).sort()).toStrictEqual(
+        data.message.sort(),
+      );
     });
   });
 

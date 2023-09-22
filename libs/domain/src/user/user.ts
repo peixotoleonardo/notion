@@ -15,7 +15,7 @@ export class User extends AggregateRoot {
     return this._token;
   }
 
-  constructor(
+  private constructor(
     id: Identifier,
     private _email: Email,
     private _token: string,
@@ -27,6 +27,24 @@ export class User extends AggregateRoot {
   }
 
   static new(email: string, token: string, username: string) {
-    return new this(Identifier.unique(), new Email(email), token, username);
+    return new this(Identifier.unique(), Email.with(email), token, username);
+  }
+
+  static with(
+    id: string,
+    email: string,
+    token: string,
+    username: string,
+    bio: string,
+    image: string,
+  ) {
+    return new this(
+      Identifier.with(id),
+      Email.with(email),
+      token,
+      username,
+      bio,
+      image,
+    );
   }
 }

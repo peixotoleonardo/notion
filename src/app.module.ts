@@ -11,17 +11,20 @@ import {
   TypeOrmConfigSchema,
   AppConfigSchema,
   appConfigFactory,
+  JwtConfigSchema,
+  jwtConfigFactory,
 } from '@notion/common/config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [typeOrmConfigFactory, appConfigFactory],
+      load: [jwtConfigFactory, appConfigFactory, typeOrmConfigFactory],
       validationSchema: Joi.object({
         ...UserConfigSchema,
         ...TypeOrmConfigSchema,
         ...AppConfigSchema,
+        ...JwtConfigSchema,
       }),
       ...(process.env.NODE_ENV === 'test'
         ? {
