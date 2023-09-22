@@ -23,6 +23,9 @@ import {
         ...TypeOrmConfigSchema,
         ...AppConfigSchema,
       }),
+      ...(process.env.NODE_ENV === 'test' ? {
+        envFilePath: '.env.e2e',
+      } : {})
     }),
     TypeOrmModule.forRootAsync({
       inject: [TypeOrmConfig],

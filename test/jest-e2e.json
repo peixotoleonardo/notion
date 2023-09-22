@@ -10,10 +10,13 @@
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },
+  "globalSetup": "./config/setup.js",
+  "globalTeardown": "./config/teardown.js",
   "moduleNameMapper": {
-    "@app/domain/(.*)": "<rootDir>/../libs/domain/src/$1",
-    "@app/domain": "<rootDir>/../libs/domain/src",
-    "@app/application/(.*)": "<rootDir>/../libs/application/src/$1",
-    "@app/application": "<rootDir>/../libs/application/src"
+    "^@notion(|/.*)$": "<rootDir>/../src/$1",
+    "^@app/domain/(.*)": "<rootDir>/../libs/domain/src/$1",
+    "^@app/domain": "<rootDir>/../libs/domain/src",
+    "^@app/application/(.*)": "<rootDir>/../libs/application/src/$1",
+    "^@app/application": "<rootDir>/../libs/application/src"
   }
 }
