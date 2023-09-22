@@ -1,5 +1,4 @@
 import { User } from '@app/domain/user/user';
-import { Notification } from '@app/domain/common/validation/handlers/notification';
 
 import { IHash } from '@app/application/common/services/hash';
 import { CreateUserOutput } from '@app/application/user/commands/create/create-user.output';
@@ -14,13 +13,11 @@ export class CreateUserUseCase implements ICreateUserUseCase {
   ) {}
 
   async execute(command: CreateUserCommand) {
-    const token = await this.hash.execute(command.password, command.salt);
-
-    const user = User.new(command.email, token, command.username);
-
-    const notification = new Notification();
-
-    user.validate(notification);
+    const user = User.new(
+      command.email, 
+      await this.hash.execute(command.password, command.salt),
+      command.username,
+    );
 
     await this.userWriteOnly.add(user);
 

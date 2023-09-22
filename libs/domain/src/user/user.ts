@@ -1,8 +1,6 @@
 import { Identifier } from '@app/domain/common/identifier';
 import { Email } from '@app/domain/common/value-objects/email';
-import { UserValidator } from '@app/domain/user/user.validator';
 import { AggregateRoot } from '@app/domain/common/aggregate-root';
-import { ValidationHandler } from '@app/domain/common/validation/validation-handler';
 
 export class User extends AggregateRoot {
   get email() {
@@ -30,9 +28,5 @@ export class User extends AggregateRoot {
 
   static new(email: string, token: string, username: string) {
     return new this(Identifier.unique(), new Email(email), token, username);
-  }
-
-  async validate(handler: ValidationHandler) {
-    await new UserValidator(handler, this).validate();
   }
 }
