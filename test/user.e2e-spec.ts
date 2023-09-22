@@ -56,6 +56,44 @@ describe('UserController (e2e)', () => {
     });
   });
 
+  describe('POST /api/users/login', () => {
+    const email = faker.internet.email();
+    const username = faker.internet.userName();
+    const password = faker.internet.password();
+
+    beforeAll(async () => {
+      await request(app.getHttpServer())
+        .post('/api/users')
+        .send({ email, username, password });
+    });
+
+    it('given a valid credential should return the token', async () => {
+      const credential = { email, password };
+
+      const response = await request(app.getHttpServer())
+        .post('/api/users/login')
+        .send(credential)
+        .set('Accept', 'application/json');
+
+      expect(response.status).toBe(HttpStatus.CREATED); 
+      expect(typeof response.body.access_token).toBe('string');
+    });
+
+    it('given an invalid credential should return 401', async () => {
+      const invalidCredential = { 
+        email: faker.internet.email(), 
+        password: faker.internet.password(), 
+      };
+
+      const response = await request(app.getHttpServer())
+        .post('/api/users/login')
+        .send(invalidCredential)
+        .set('Accept', 'application/json');
+
+      expect(response.status).toBe(HttpStatus.UNAUTHORIZED); 
+    });
+  });
+
   afterAll(async () => {
     await app.close();
   });
