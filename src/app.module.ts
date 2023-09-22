@@ -1,6 +1,35 @@
+import Joi from 'joi';
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { CommonModule } from '@notion/common/common.module';
+import { UserModule, UserConfigSchema } from '@notion/user';
+import {
+  TypeOrmConfig,
+  typeOrmConfigFactory,
+  TypeOrmConfigSchema,
+  AppConfigSchema,
+  appConfigFactory,
+} from '@notion/common/config';
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [typeOrmConfigFactory, appConfigFactory],
+      validationSchema: Joi.object({
+        ...UserConfigSchema,
+        ...TypeOrmConfigSchema,
+        ...AppConfigSchema,
+      }),
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [TypeOrmConfig],
+      useFactory: (config: TypeOrmConfig) => config,
+    }),
+    CommonModule,
+    UserModule,
+  ],
 })
 export class AppModule {}

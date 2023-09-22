@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+  postgres:
+    container_name: dabase
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME:-notion}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-notion}
+      POSTGRES_DB: ${DATABASE_NAME:-notion}
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+    env_file:
+      - .env
+    ports:
+      - ${DATABASE_PORT-5432}:5432
+volumes:
+    postgres:

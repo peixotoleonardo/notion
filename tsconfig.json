@@ -17,8 +17,23 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
+    "esModuleInterop": true,
     "paths": {
-      "@notion/*": ["src/*"]
+      "@notion/*": [
+        "src/*"
+      ],
+      "@app/domain": [
+        "libs/domain/src"
+      ],
+      "@app/domain/*": [
+        "libs/domain/src/*"
+      ],
+      "@app/application": [
+        "libs/application/src"
+      ],
+      "@app/application/*": [
+        "libs/application/src/*"
+      ]
     }
   }
 }

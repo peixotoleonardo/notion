@@ -1,8 +1,14 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 
-async function bootstrap() {
+import { AppModule } from '@notion/app.module';
+import { AppConfig } from '@notion/common/config';
+
+(async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
-}
-bootstrap();
+
+  const config = app.get<AppConfig>(AppConfig);
+
+  app.setGlobalPrefix(config.api.prefix);
+
+  await app.listen(config.port);
+})();
